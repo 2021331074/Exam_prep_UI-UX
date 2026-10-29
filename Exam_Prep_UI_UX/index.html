@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TutorMigo.ai — Exam Prep & Question Bank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #0a0e17;
+      --bg-sidebar: #0f1624;
+      --bg-surface: #121b2d;
+      --bg-card: #152238;
+      --bg-card-hover: #1c2c47;
+      --border-subtle: #1e2f4d;
+      --border-hover: #334d77;
+      --border-focus: #3b82f6;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-glow: rgba(59, 130, 246, 0.28);
+      --accent-bd: #10b981;
+      --accent-global: #8b5cf6;
+      --accent-job: #f59e0b;
+      --accent-it: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-base);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    /* ─── SIDEBAR (Context [1], [2], [3]) ─── */
+    .app-sidebar {
+      width: 260px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 40;
+    }
+
+    .brand-section {
+      padding: 22px 20px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .brand-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+    }
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .nav-list {
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 14px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .nav-item.active {
+      color: #fff;
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.04));
+      border-left: 3px solid var(--primary);
+      padding-left: 11px;
+    }
+
+    .nav-item svg {
+      width: 17px;
+      height: 17px;
+      opacity: 0.85;
+      stroke-width: 2;
+    }
+
+    .nav-item.active svg {
+      color: var(--primary);
+      opacity: 1;
+    }
+
+    /* AI Usage Card (Context [1]) */
+    .sidebar-usage-box {
+      margin: 12px;
+      padding: 14px;
+      background: rgba(18, 27, 45, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+
+    .usage-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .usage-label-row span:first-child {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+    }
+
+    .usage-bar-rail {
+      height: 6px;
+      background: #172439;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .usage-bar-progress {
+      height: 100%;
+      width: 44.4%;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 999px;
+    }
+
+    .usage-caption {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .sidebar-bottom-user {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+
+    /* ─── MAIN CONTENT LAYOUT ─── */
+    .app-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: radial-gradient(circle at 85% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 45%),
+                  radial-gradient(circle at 10% 90%, rgba(139, 92, 246, 0.06) 0%, transparent 40%),
+                  var(--bg-base);
+    }
+
+    /* ─── TOPBAR (Exact matches: Grade 11th, 1, Lv 2, 🔥 6, ⚡ 183, TK) ─── */
+    .app-topbar {
+      height: 68px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(15, 22, 36, 0.85);
+      backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .top-search-wrap {
+      position: relative;
+      width: 360px;
+    }
+
+    .top-search-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      width: 16px;
+      height: 16px;
+    }
+
+    .top-search-wrap input {
+      width: 100%;
+      background: #111a2d;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      color: var(--text-main);
+      padding: 9px 14px 9px 40px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .top-search-wrap input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+      background: #142037;
+    }
+
+    .topbar-badges {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #152238;
+      border: 1px solid var(--border-subtle);
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .badge-pill.grade {
+      color: #93c5fd;
+      border-color: rgba(59, 130, 246, 0.3);
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .badge-pill.streak {
+      color: #fb923c;
+      border-color: rgba(251, 146, 60, 0.3);
+      background: rgba(251, 146, 60, 0.1);
+    }
+
+    .badge-pill.energy {
+      color: #facc15;
+      border-color: rgba(250, 204, 21, 0.3);
+      background: rgba(250, 204, 21, 0.1);
+    }
+
+    .badge-pill.level {
+      color: #c084fc;
+      border-color: rgba(192, 132, 252, 0.3);
+      background: rgba(192, 132, 252, 0.1);
+    }
+
+    .avatar-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+    }
+
+    /* ─── BODY CONTAINER ─── */
+    .content-area {
+      padding: 32px;
+      max-width: 1320px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .crumb-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    .crumb-bar a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .crumb-bar a:hover {
+      color: var(--text-main);
+    }
+
+    .hero-heading {
+      margin-bottom: 24px;
+    }
+
+    .hero-heading h1 {
+      font-size: 29px;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .hero-heading p {
+      font-size: 14.5px;
+      color: var(--text-muted);
+    }
+
+    /* ─── TAB NAVIGATION & STAT BANNER ─── */
+    .view-tabs-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 24px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 16px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 12px 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .status-counter-tag {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      background: #141f33;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .status-counter-tag strong {
+      color: #60a5fa;
+    }
+
+    /* ─── FILTER CHIPS ─── */
+    .category-filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+    }
+
+    .filter-chip {
+      background: #131d2f;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .filter-chip:hover {
+      background: #19273f;
+      color: #fff;
+      border-color: #334d77;
+    }
+
+    .filter-chip.active {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
+    }
+
+    .filter-chip .chip-count {
+      font-size: 10px;
+      padding: 2px 6px;
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+    }
+
+    /* ─── EXAMS GRID ─── */
+    .exams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+      gap: 22px;
+    }
+
+    .exam-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .exam-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: 0 16px 30px -10px rgba(0, 0, 0, 0.6), 0 0 24px rgba(59, 130, 246, 0.1);
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .badge-category {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .cat-bd { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .cat-intl { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.3); }
+    .cat-job { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-it { background: rgba(6, 182, 212, 0.15); color: #38bdf8; border: 1px solid rgba(6, 182, 212, 0.3); }
+    .cat-lang { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.08);
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .status-pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 6px #10b981;
+    }
+
+    .exam-card-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .exam-card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 18px;
+      flex: 1;
+    }
+
+    .sec-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .sec-pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .section-pill {
+      font-size: 11px;
+      font-weight: 600;
+      background: #131c2e;
+      border: 1px solid var(--border-subtle);
+      color: #cbd5e1;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+
+    .card-foot {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .foot-meta {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .foot-meta strong {
+      color: #fff;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 13px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+      outline: none;
+    }
+
+    .btn-secondary {
+      background: rgba(139, 92, 246, 0.15);
+      border-color: rgba(139, 92, 246, 0.35);
+      color: #d8b4fe;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(139, 92, 246, 0.28);
+      border-color: #a855f7;
+      color: #fff;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    /* ─── MODAL SYSTEM ─── */
+    .modal-veil {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 8, 16, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-veil.open {
+      display: flex;
+    }
+
+    .modal-shell {
+      background: #111a2d;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 820px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
+      animation: modalPop 0.2s ease-out;
+    }
+
+    @keyframes modalPop {
+      from { transform: translateY(12px) scale(0.98); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .modal-head {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-head h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .modal-head p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .modal-close-icon {
+      background: #1b273d;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .modal-close-icon:hover {
+      color: #fff;
+      background: #253754;
+    }
+
+    .modal-scrollable {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* Demo Quiz Elements */
+    .subject-pill-scroller {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .sub-chip {
+      padding: 6px 14px;
+      background: #162238;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .sub-chip:hover {
+      background: #1d2d4a;
+      color: #fff;
+    }
+
+    .sub-chip.active {
+      background: #2563eb;
+      color: #fff;
+      border-color: #3b82f6;
+    }
+
+    .quiz-card {
+      background: #141f33;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 12px;
+    }
+
+    .quiz-tag {
+      font-weight: 700;
+      color: #60a5fa;
+    }
+
+    .quiz-timer-badge {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .quiz-question {
+      font-size: 15.5px;
+      font-weight: 600;
+      line-height: 1.55;
+      color: #f8fafc;
+      margin-bottom: 20px;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quiz-opt {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #0f1726;
+      border: 1px solid #1f2f4c;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .quiz-opt:hover {
+      background: #162339;
+      border-color: #3b82f6;
+    }
+
+    .quiz-opt.selected {
+      border-color: var(--primary);
+      background: rgba(59, 130, 246, 0.15);
+    }
+
+    .quiz-opt.correct {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.18);
+    }
+
+    .quiz-opt.wrong {
+      border-color: #f43f5e;
+      background: rgba(244, 63, 94, 0.18);
+    }
+
+    .quiz-opt-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: #1b263b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .quiz-opt-text {
+      font-size: 13.5px;
+      flex: 1;
+      line-height: 1.4;
+    }
+
+    .solution-box {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      line-height: 1.55;
+      display: none;
+    }
+
+    .modal-foot {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Enrollment Modal Styles */
+    .field-group {
+      margin-bottom: 20px;
+    }
+
+    .field-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 6px;
+    }
+
+    .field-group input {
+      width: 100%;
+      background: #0d1524;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: #fff;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .field-group input:focus {
+      border-color: var(--primary);
+    }
+
+    .field-hint {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      margin-top: 5px;
+    }
+
+    .forecast-callout {
+      padding: 14px;
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      color: #bfdbfe;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 992px) {
+      .app-sidebar {
+        display: none;
+      }
+      .content-area {
+        padding: 20px 16px;
+      }
+      .app-topbar {
+        padding: 0 16px;
+      }
+      .top-search-wrap {
+        width: 220px;
+      }
+      .exams-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LEFT SIDEBAR (Preserves TutorMigo Menu) -->
+  <aside class="app-sidebar">
+    <div class="brand-section">
+      <div class="brand-row">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div>
+          <div class="brand-title">TutorMigo.ai</div>
+          <div class="brand-subtitle">by CleverCreator.AI</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="nav-list">
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        Tutor
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Assignments
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Study Squads
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Debate
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Games
+      </a>
+      <a class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Exam Prep
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Study Tools
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        What can I ask?
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Progress
+      </a>
+    </nav>
+
+    <!-- AI USAGE STAT BOX (from context [1]) -->
+    <div class="sidebar-usage-box">
+      <div class="usage-label-row">
+        <span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Growth · AI usage
+        </span>
+        <span style="color: #3b82f6;">44.4%</span>
+      </div>
+      <div class="usage-bar-rail">
+        <div class="usage-bar-progress"></div>
+      </div>
+      <div class="usage-caption">
+        <span>55.6% left</span>
+        <span>Resets Nov 4</span>
+      </div>
+    </div>
+
+    <div class="sidebar-bottom-user">
+      <span style="color: var(--text-dim); font-weight: 700;">STUDENT</span>
+      <span style="color: var(--text-muted); cursor: pointer;">Settings ⚙️</span>
+    </div>
+  </aside>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="app-main">
+    <!-- TOPBAR (Screenshot 18, 19, 20 status stats) -->
+    <header class="app-topbar">
+      <div class="top-search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search exams — name, subject, or section..." id="examSearchField">
+      </div>
+
+      <div class="topbar-badges">
+        <div class="badge-pill grade">Grade 11th</div>
+        <div class="badge-pill" style="color: #38bdf8;">🔔 1</div>
+        <div class="badge-pill level">Lv 2</div>
+        <div class="badge-pill streak">🔥 6</div>
+        <div class="badge-pill energy">⚡ 183</div>
+        <div class="avatar-btn" title="Tanzim Khan">TK</div>
+      </div>
+    </header>
+
+    <!-- CONTENT BODY -->
+    <div class="content-area">
+      <div class="crumb-bar">
+        <span>Home</span>
+        <span>›</span>
+        <span>Exam Prep</span>
+        <span>›</span>
+        <span style="color: var(--text-main);">Browse Comprehensive Exam Bank</span>
+      </div>
+
+      <div class="hero-heading">
+        <h1>Exam prep & Interactive Question Banks</h1>
+        <p>Pick an exam to get a plan, real subject-wise demo practice, and AI-predicted score pacing.</p>
+      </div>
+
+      <!-- VIEW TABS -->
+      <div class="view-tabs-bar">
+        <div class="tab-buttons">
+          <button class="tab-btn" onclick="toggleMainView('myprep')">My Prep</button>
+          <button class="tab-btn active" onclick="toggleMainView('browse')">Browse Exams</button>
+        </div>
+        <div class="status-counter-tag">
+          <span id="activeExamsCount">16</span> exams available
+        </div>
+      </div>
+
+      <!-- FILTER CHIPS -->
+      <div class="category-filter-row" id="filterChipsRow">
+        <button class="filter-chip active" onclick="setExamFilter('all')">All <span class="chip-count">16</span></button>
+        <button class="filter-chip" onclick="setExamFilter('bd-board')">BD Board (HSC & SSC) <span class="chip-count">2</span></button>
+        <button class="filter-chip" onclick="setExamFilter('bd-uni')">BD Univ & Medical <span class="chip-count">3</span></button>
+        <button class="filter-chip" onclick="setExamFilter('bd-job')">BCS & BD Jobs <span class="chip-count">2</span></button>
+        <button class="filter-chip" onclick="setExamFilter('itee')">ITEE (IP & FE) <span class="chip-count">2</span></button>
+        <button class="filter-chip" onclick="setExamFilter('intl-lang')">IELTS & TOEFL <span class="chip-count">3</span></button>
+        <button class="filter-chip" onclick="setExamFilter('intl-grad')">SAT, GRE & GMAT <span class="chip-count">3</span></button>
+        <button class="filter-chip" onclick="setExamFilter('intl-other')">JLPT & PTE <span class="chip-count">1</span></button>
+      </div>
+
+      <!-- EXAMS GRID -->
+      <div class="exams-grid" id="examsContainer">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </main>
+
+  <!-- INTERACTIVE DEMO QUIZ MODAL -->
+  <div class="modal-veil" id="demoPracticeModal">
+    <div class="modal-shell">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalExamTitle">Exam Demo Practice</h3>
+          <p id="modalExamSubtitle">Select subjects and practice real standard questions with step-by-step verified explanations</p>
+        </div>
+        <button class="modal-close-icon" onclick="closeDemoPracticeModal()">&times;</button>
+      </div>
+
+      <div class="modal-scrollable">
+        <!-- Subject Switcher -->
+        <div class="subject-pill-scroller" id="modalSubjectBar">
+          <!-- Dynamic subject buttons -->
+        </div>
+
+        <div class="quiz-card">
+          <div class="quiz-header">
+            <span class="quiz-tag" id="quizSubjectTag">Subject / Module</span>
+            <span class="quiz-timer-badge" id="quizTimerTag">Standard Drill • 1.5 min</span>
+          </div>
+
+          <div class="quiz-question" id="quizQuestionText">
+            Question text loading...
+          </div>
+
+          <div class="options-grid" id="quizOptionsList">
+            <!-- Dynamic options -->
+          </div>
+
+          <div class="solution-box" id="quizSolutionBox">
+            <!-- Verified answer details -->
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <span style="font-size: 12.5px; color: var(--text-dim);" id="quizCounterText">Question 1 of 1</span>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-secondary" onclick="closeDemoPracticeModal()">Exit Drill</button>
+          <button class="btn btn-primary" id="submitAnswerBtn" onclick="evaluateQuizAnswer()">Check Solution</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENROLLMENT MODAL (Target Score & Target Date) -->
+  <div class="modal-veil" id="enrollmentModal">
+    <div class="modal-shell" style="max-width: 520px;">
+      <div class="modal-head">
+        <div>
+          <h3 id="enrollHeaderTitle">Enroll in Exam</h3>
+          <p>Set a target score and date to unlock pacing, score predictions, and drills.</p>
+        </div>
+        <button class="modal-close-icon" onclick="closeEnrollmentModal()">&times;</button>
+      </div>
+
+      <div class="modal-scrollable">
+        <div class="field-group">
+          <label>Target Score / GPA</label>
+          <input type="text" id="targetScoreInput" value="GPA 5.00">
+          <div class="field-hint" id="targetScoreHint">Allowed range: Grade 1.00 to 5.00</div>
+        </div>
+
+        <div class="field-group">
+          <label>Target Exam Date</label>
+          <input type="date" id="targetExamDate">
+          <div class="field-hint">When do you plan to take the exam? Drives your daily questions and weekly mock tests.</div>
+        </div>
+
+        <div class="forecast-callout">
+          <strong>⚡ TutorMigo AI Forecast:</strong> We will construct an adaptive review schedule covering high-yield formulas, past-paper revisions, and weakness diagnostics.
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeEnrollmentModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitEnrollment()">Confirm & Start Prep</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ════════════════════════════════════════════════════════════
+    // COMPREHENSIVE QUESTION BANK DATABASE
+    // Covering:
+    // - Bangladesh: HSC (All Subjects), SSC (All Subjects), BCS Preliminary, Medical (MBBS), BUET Engineering, DU Ka/Kha, Bangladesh Bank AD
+    // - International: ITEE IP, ITEE FE, IELTS Academic, IELTS General, Digital SAT, TOEFL iBT, GRE, GMAT Focus, JLPT
+    // ════════════════════════════════════════════════════════════
+
+    const allExamsData = [
+      // 1. HSC Academic (All Subjects)
+      {
+        id: 'hsc-bd',
+        category: 'bd-board',
+        tagClass: 'cat-bd',
+        tagText: 'Bangladesh Board',
+        title: 'HSC Academic Exam',
+        desc: 'Higher Secondary Certificate full prep for Science, Commerce & Humanities across standard NCTB curriculum with Creative & MCQ questions.',
+        sections: ['Physics', 'Chemistry', 'Higher Math', 'Biology', 'ICT', 'Bangla', 'English'],
+        duration: '180 MIN',
+        scoreRange: 'GPA 1.00 to 5.00 (Step 0.01)',
+        defaultScore: '5.00',
+        subjects: {
+          'Physics': {
+            q: "একটি কণা r ব্যাসার্ধের বৃত্তাকার পথে সুষম দ্রুতিতে ঘুরছে। বৃত্তাকার পথের কেন্দ্রে কণাটির উপর প্রযুক্ত অভিকেন্দ্র বল F হলে, এক পূর্ণ ঘূর্ণনে কৃতকাজের মান কত?",
+            options: ["2πrF", "πrF", "0 (শূন্য)", "F / (2πr)"],
+            correct: 2,
+            expl: "অভিকেন্দ্র বল সর্বদা বৃত্তাকার গতিপথের ব্যাসার্ধ বরাবর কেন্দ্রের দিকে ক্রিয়া করে, যা কণার তাৎক্ষণিক সরণের দিকের সাথে ৯০° কোণ তৈরি করে। সুতরাং কৃতকাজ W = F · s · cos(90°) = 0।"
+          },
+          'Chemistry': {
+            q: "নিচের কোন অরবিটালটিতে ইলেকট্রন আগে প্রবেশ করবে? (Aufbau নীতি অনুযায়ী)",
+            options: ["4s", "3d", "4p", "5s"],
+            correct: 0,
+            expl: "আউফবাউ নীতি অনুযায়ী (n + l) এর মান যে অরবিটালের জন্য কম, ইলেকট্রন সেখানে আগে প্রবেশ করে। 4s এর জন্য (4 + 0 = 4), যেখানে 3d এর জন্য (3 + 2 = 5)। সুতরাং 4s-এ ইলেকট্রন আগে প্রবেশ করবে।"
+          },
+          'Higher Math': {
+            q: "y = sin(2x) বক্ররেখার x = 0 বিন্দুতে স্পর্শকের ঢাল (Slope) কত?",
+            options: ["0", "1", "2", "-2"],
+            correct: 2,
+            expl: "বক্ররেখার ঢাল dy/dx = d/dx[sin(2x)] = 2 cos(2x)। x = 0 বিন্দুতে dy/dx = 2 cos(0) = 2(1) = 2।"
+          },
+          'Biology': {
+            q: "সালোকসংশ্লেষণের আলোক-নিরপেক্ষ পর্যায়ে (কালভিন চক্র) CO₂ গ্রাহক হিসেবে কোনটি কাজ করে?",
+            options: ["ফসফোগ্লিসারালডিহাইড (PGAL)", "রাইবুলোজ ১,৫-বিসফসফেট (RuBP)", "অক্সালোঅ্যাসিটিক এসিড (OAA)", "ম্যালিক এসিড"],
+            correct: 1,
+            expl: "C₃ উদ্ভিদ বা কালভিন চক্রে বায়ুমণ্ডলের CO₂ গ্যাস ৫-কার্বনবিশিষ্ট রাইবুলোজ-১,৫-বিসফসফেট (RuBP) এর সাথে রুবিকো (RuBisCO) এনজাইমের উপস্থিতিতে যুক্ত হয়ে অস্থায়ী কিটো এসিড তৈরি করে।"
+          },
+          'ICT': {
+            q: "কোন নেটওয়ার্ক টপোলজিতে একটি কেন্দ্রীয় হাব বা সুইচের সাথে সমস্ত নোড সরাসরি সংযুক্ত থাকে?",
+            options: ["বাস টপোলজি (Bus)", "রিং টপোলজি (Ring)", "স্টার টপোলজি (Star)", "মেশ টপোলজি (Mesh)"],
+            correct: 2,
+            expl: "স্টার টপোলজিতে (Star Topology) কেন্দ্রীয় নিয়ন্ত্রণকারী যন্ত্র হিসেবে একটি সুইচ বা হাব ব্যবহৃত হয় এবং প্রতিটি ওয়ার্কস্টেশন সরাসরি তার সাথে সংযুক্ত থাকে।"
+          },
+          'Bangla': {
+            q: "'আমার পথ' প্রবন্ধে কাজী নজরুল ইসলাম নিজেকে কার অভিশাপ বলে ঘোষণা করেছেন?",
+            options: ["সময়ের", "অসত্যের", "মিথ্যার", "ভণ্ডামির"],
+            correct: 1,
+            expl: "কাজী নজরুল ইসলাম 'আমার পথ' প্রবন্ধে লিখেছেন: 'আমি আপনারে ছাড়া কাউকে কুর্নিশ করি না—অর্থাৎ সত্য ছাড়া কোনো মিথ্যা আমার মাথা নত করাতে পারে না। আমি অসত্যের অভিশাপ, আমি সত্যের আশীর্বাদ।'"
+          },
+          'English': {
+            q: "Choose the correct preposition: 'The principal disqualified the candidate _____ participating in the inter-college debate.'",
+            options: ["for", "to", "from", "at"],
+            correct: 2,
+            expl: "The standard collocation and grammatical rule for the verb 'disqualify' is 'disqualify someone from doing something'."
+          }
+        }
+      },
+
+      // 2. SSC Board (All Subjects)
+      {
+        id: 'ssc-bd',
+        category: 'bd-board',
+        tagClass: 'cat-bd',
+        tagText: 'Bangladesh Board',
+        title: 'SSC Board Exam',
+        desc: 'Secondary School Certificate foundational curriculum drills for General Mathematics, Science, Higher Math, Bangla, and English.',
+        sections: ['General Math', 'Higher Math', 'General Science', 'Bangla 1st & 2nd', 'English', 'ICT'],
+        duration: '180 MIN',
+        scoreRange: 'GPA 1.00 to 5.00',
+        defaultScore: '5.00',
+        subjects: {
+          'General Math': {
+            q: "একটি সমকোণী ত্রিভুজের অতিভুজ 13 সেমি এবং একটি বাহু 5 সেমি হলে, অপর বাহুর দৈর্ঘ্য কত?",
+            options: ["10 সেমি", "11 সেমি", "12 সেমি", "14 সেমি"],
+            correct: 2,
+            expl: "পিথাগোরাসের উপপাদ্য অনুযায়ী: অতিভুজ² = লম্ব² + ভূমি² => 13² = 5² + x² => 169 = 25 + x² => x² = 144 => x = 12 সেমি।"
+          },
+          'Higher Math': {
+            q: "(x - 2)(x - 3) > 0 অসমতাটির সমাধান সেট কোনটি?",
+            options: ["2 < x < 3", "x < 2 অথবা x > 3", "x ≤ 2", "সকল বাস্তব সংখ্যা"],
+            correct: 1,
+            expl: "দুটি রাশির গুণফল ধনাত্মক হবে যদি উভয় রাশি একই চিহ্নের হয়। সুতরাং x > 3 (উভয়ই ধনাত্মক) অথবা x < 2 (উভয়ই ঋণাত্মক)। অতএব নির্ণেয় সমাধান: x < 2 অথবা x > 3।"
+          },
+          'General Science': {
+            q: "বায়োগ্যাসের প্রধান উপাদান কোনটি?",
+            options: ["কার্বন ডাই-অক্সাইড", "মিথেন (CH₄)", "হাইড্রোজেন সালফাইড", "অক্সিজেন"],
+            correct: 1,
+            expl: "বায়োগ্যাসে প্রায় ৬০% থেকে ৭০% মিথেন (CH₄) থাকে, যা এর প্রধান দাহ্য উপাদান হিসেবে কাজ করে।"
+          },
+          'Bangla 1st & 2nd': {
+            q: "'পদ্মা নদীর মাঝি' উপন্যাসের রচয়িতা কে?",
+            options: ["তারাশঙ্কর বন্দ্যোপাধ্যায়", "মানিক বন্দ্যোপাধ্যায়", "বিভূতিভূষণ বন্দ্যোপাধ্যায়", "শরৎচন্দ্র চট্টোপাধ্যায়"],
+            correct: 1,
+            expl: "'পদ্মা নদীর মাঝি' মানিক বন্দ্যোপাধ্যায়ের একটি ধ্রুপদী সামাজিক উপন্যাস, যা ১৯৩৬ সালে প্রকাশিত হয়।"
+          }
+        }
+      },
+
+      // 3. BCS Preliminary (Govt Jobs)
+      {
+        id: 'bcs-bd',
+        category: 'bd-job',
+        tagClass: 'cat-job',
+        tagText: 'Govt Competitive',
+        title: 'BCS Preliminary Exam',
+        desc: 'Bangladesh Civil Service cadre recruitment test covering Bangla, English, Bangladesh Affairs, International Affairs, General Science & Mental Ability.',
+        sections: ['Bangla Lit', 'English Lit & Gram', 'Bangladesh Affairs', 'International', 'Mental Ability', 'General Science'],
+        duration: '120 MIN',
+        scoreRange: '0 to 200 Marks (Cutoff ~115+)',
+        defaultScore: '125',
+        subjects: {
+          'Bangladesh Affairs': {
+            q: "১৯৭১ সালের মুজিবনগর সরকার কত তারিখে আনুষ্ঠানিকভাবে শপথ গ্রহণ করে?",
+            options: ["১০ এপ্রিল ১৯৭১", "১৭ এপ্রিল ১৯৭১", "২৬ মার্চ ১৯৭১", "২৫ এপ্রিল ১৯৭১"],
+            correct: 1,
+            expl: "১০ এপ্রিল ১৯৭১ সালে মুজিবনগর সরকার গঠিত হয় এবং ১৭ এপ্রিল ১৯৭১ সালে মেহেরপুরের বৈদ্যনাথতলার (বর্তমান মুজিবনগর) আম্রকাননে শপথ গ্রহণ করে।"
+          },
+          'Bangla Lit': {
+            q: "বাংলা সাহিত্যের প্রথম মহাকাব্য 'মেঘনাদবধ কাব্য' কত সালে প্রকাশিত হয়?",
+            options: ["১৮৫৭", "১৮৬১", "১৮৬৯", "১৮৭২"],
+            correct: 1,
+            expl: "মাইকেল মধুসূদন দত্ত রচিত অমিত্রাক্ষর ছন্দের প্রথম সার্থক বাংলা মহাকাব্য 'মেঘনাদবধ কাব্য' ১৮৬১ সালে দুই খণ্ডে প্রকাশিত হয়।"
+          },
+          'English Lit & Gram': {
+            q: "Who is the author of the dystopian novel 'Nineteen Eighty-Four'?",
+            options: ["Aldous Huxley", "George Orwell", "Virginia Woolf", "E. M. Forster"],
+            correct: 1,
+            expl: "George Orwell (Eric Arthur Blair) published 'Nineteen Eighty-Four' in 1949, depicting totalitarian regime surveillance and Big Brother."
+          },
+          'Mental Ability': {
+            q: "যদি DAY = 4125 হয়, তবে NIGHT = কত? (A=1, B=2, ..., Z=26 হিসেবে)",
+            options: ["1497820", "1387820", "1487819", "1498821"],
+            correct: 0,
+            expl: "বর্ণমালার অবস্থান অনুযায়ী: N=14, I=9, G=7, H=8, T=20। সুতরাং NIGHT = 1497820।"
+          }
+        }
+      },
+
+      // 4. Medical College Admission (MBBS / BDS)
+      {
+        id: 'medical-bd',
+        category: 'bd-uni',
+        tagClass: 'cat-bd',
+        tagText: 'Medical Admission',
+        title: 'MBBS Medical Admission',
+        desc: 'DGHS national medical entrance exam testing deep conceptual Biology (Botany & Zoology), Chemistry, Physics, General Knowledge and English.',
+        sections: ['Biology (Zoology & Botany)', 'Chemistry', 'Physics', 'English', 'General Knowledge'],
+        duration: '60 MIN (100 MCQ)',
+        scoreRange: '0 to 100 Marks (Cutoff ~70+)',
+        defaultScore: '78',
+        subjects: {
+          'Biology (Zoology & Botany)': {
+            q: "মানবদেহের রক্ত তঞ্চনে (Blood Clotting) সরাসরি সাহায্যকারী প্লাজমা প্রোটিন কোনটি?",
+            options: ["অ্যালবুমিন", "গ্লোবিউলিন", "ফাইব্রিনোজেন", "হিমোগ্লোবিন"],
+            correct: 2,
+            expl: "রক্তরসের ফাইব্রিনোজেন (Fibrinogen) প্রোটিনটি থ্রম্বিন এনজাইমের উপস্থিতিতে অদ্রবণীয় ফাইব্রিন জালকে রূপান্তরিত হয়ে রক্ত জমাট বাঁধতে সাহায্য করে।"
+          },
+          'Chemistry': {
+            q: "নিচের কোনটিকে দার্শনিক উল (Philosopher's Wool) বলা হয়?",
+            options: ["ZnO", "MgO", "CaO", "Al₂O₃"],
+            correct: 0,
+            expl: "জিঙ্ককে বাতাসে তীব্রভাবে উত্তপ্ত করলে সাদা তুলার মতো জিঙ্ক অক্সাইড (ZnO) তৈরি হয়, যাকে ঐতিহাসিকভাবে 'দার্শনিক উল' বলা হয়।"
+          },
+          'General Knowledge': {
+            q: "বিশ্ব স্বাস্থ্য সংস্থা (WHO) এর সদর দপ্তর কোথায় অবস্থিত?",
+            options: ["নিউইয়র্ক, যুক্তরাষ্ট্র", "জেনেভা, সুইজারল্যান্ড", "প্যারিস, ফ্রান্স", "ভিয়েনা, অস্ট্রিয়া"],
+            correct: 1,
+            expl: "১৯৪৮ সালে প্রতিষ্ঠিত বিশ্ব স্বাস্থ্য সংস্থা (WHO)-এর সদর দপ্তর সুইজারল্যান্ডের জেনেভা শহরে অবস্থিত।"
+          }
+        }
+      },
+
+      // 5. BUET & Engineering Admission Test
+      {
+        id: 'buet-bd',
+        category: 'bd-uni',
+        tagClass: 'cat-bd',
+        tagText: 'Engineering Admission',
+        title: 'BUET & Engineering Admission',
+        desc: 'Advanced problem-solving examination for BUET, RUET, KUET, and CUET covering analytical Physics, Higher Mathematics, and Chemistry.',
+        sections: ['Higher Math', 'Physics', 'Chemistry'],
+        duration: '120 MIN (Written/MCQ)',
+        scoreRange: '0 to 400 Marks',
+        defaultScore: '290',
+        subjects: {
+          'Higher Math': {
+            q: "যদি ম্যাট্রিক্স A = [[2, 3], [1, 4]] হয়, তবে এর বিপরীত ম্যাট্রিক্স A⁻¹ এর নির্ণায়কের (Determinant) মান কত?",
+            options: ["5", "1/5", "-5", "-1/5"],
+            correct: 1,
+            expl: "det(A) = (2)(4) - (3)(1) = 8 - 3 = 5। আমরা জানি det(A⁻¹) = 1 / det(A) = 1/5।"
+          },
+          'Physics': {
+            q: "একটি কার্নো ইঞ্জিন 227°C এবং 27°C তাপমাত্রার মধ্যে কাজ করে। ইঞ্জিনটির সর্বোচ্চ তাত্ত্বিক দক্ষতা (Efficiency) কত?",
+            options: ["40%", "50%", "60%", "44%"],
+            correct: 0,
+            expl: "T₁ = 227 + 273 = 500 K; T₂ = 27 + 273 = 300 K। দক্ষতা η = (1 - T₂/T₁) × 100% = (1 - 300/500) × 100% = (2/5) × 100% = 40%।"
+          },
+          'Chemistry': {
+            q: "H₂SO₄ এ সালফারের (S) জারণ সংখ্যা কত?",
+            options: ["+4", "+6", "-2", "+2"],
+            correct: 1,
+            expl: "2(+1) + x + 4(-2) = 0 => 2 + x - 8 = 0 => x - 6 = 0 => x = +6।"
+          }
+        }
+      },
+
+      // 6. Dhaka University Admission (KA & KHA Unit)
+      {
+        id: 'du-bd',
+        category: 'bd-uni',
+        tagClass: 'cat-bd',
+        tagText: 'University Admission',
+        title: 'Dhaka University Admission',
+        desc: 'Premier public university admission tests for Science (Ka-Unit) and Arts/Social Sciences/Law (Kha-Unit) with MCQ and written sections.',
+        sections: ['Physics/Math (Ka)', 'Chemistry/Bio (Ka)', 'Bangla (Kha)', 'English (Kha)', 'General Knowledge'],
+        duration: '90 MIN',
+        scoreRange: '0 to 100 (Step 0.25 penalty)',
+        defaultScore: '74.5',
+        subjects: {
+          'Bangla (Kha)': {
+            q: "বাংলা স্বরবর্ণে মোট কতটি পূর্ণমাত্রার বর্ণ রয়েছে?",
+            options: ["৪টি", "৬টি", "৭টি", "১০টি"],
+            correct: 1,
+            expl: "বাংলা স্বরবর্ণ মোট ১১টি। এর মধ্যে পূর্ণমাত্রার বর্ণ ৬টি (অ, আ, ই, ঈ, উ, ঊ), অর্ধমাত্রার ১টি (ঋ), এবং মাত্রাহীন ৪টি (এ, ঐ, ও, ঔ)।"
+          },
+          'English (Kha)': {
+            q: "Identify the figure of speech in: 'The wind whispered through the dark weeping pines.'",
+            options: ["Metaphor", "Simile", "Personification", "Hyperbole"],
+            correct: 2,
+            expl: "Personification endows non-human things (the wind, pines) with human attributes (whispering, weeping)."
+          }
+        }
+      },
+
+      // 7. Bangladesh Bank AD & Combined Bank Officer
+      {
+        id: 'bbank-bd',
+        category: 'bd-job',
+        tagClass: 'cat-job',
+        tagText: 'Banking & Financial',
+        title: 'Bangladesh Bank AD Exam',
+        desc: 'Assistant Director & Bankers Selection Committee competitive exams assessing Quantitative Aptitude, Analytical Ability, and General Economics.',
+        sections: ['Quantitative Math', 'Analytical Ability', 'English Comprehension', 'Banking & GK', 'Bangla'],
+        duration: '60 MIN (100 MCQ)',
+        scoreRange: '0 to 100 Marks',
+        defaultScore: '68',
+        subjects: {
+          'Quantitative Math': {
+            q: "A sum of money invested at simple interest triples itself in 10 years. In how many years will it become 5 times of itself at the same rate?",
+            options: ["15 years", "20 years", "25 years", "30 years"],
+            correct: 1,
+            expl: "Tripling means interest I = 2P in 10 years => Rate R = (2P * 100) / (P * 10) = 20%. To become 5 times, interest I = 4P. Time T = (4P * 100) / (P * 20) = 20 years."
+          },
+          'Banking & GK': {
+            q: "Which instrument is used by Bangladesh Bank to control money supply in the domestic market through open market operations?",
+            options: ["Treasury Bills & Repo", "VAT adjustment", "Call money cap only", "Direct subsidies"],
+            correct: 0,
+            expl: "Bangladesh Bank utilizes Treasury Bills auctions, Repo, and Reverse Repo mechanisms as standard monetary policy tools to manage liquidity."
+          }
+        }
+      },
+
+      // 8. ITEE IP (Information Technology Passport Exam)
+      {
+        id: 'itee-ip',
+        category: 'itee',
+        tagClass: 'cat-it',
+        tagText: 'ITPEC Certification',
+        title: 'ITEE IP (IT Passport Exam)',
+        desc: 'Level 1 certification under the Asian ITPEC framework verifying foundational literacy in corporate management, IT security, and office networks.',
+        sections: ['Strategy & Management', 'Corporate IT Ethics', 'Basic Network & Hardware', 'Information Security Essentials'],
+        duration: '120 MIN (100 MCQ)',
+        scoreRange: '0 to 1000 (Pass: 600)',
+        defaultScore: '750',
+        subjects: {
+          'Strategy & Management': {
+            q: "In business strategy, which matrix categorizes a company's business units into 'Stars', 'Cash Cows', 'Question Marks', and 'Dogs' based on market growth and market share?",
+            options: ["SWOT Analysis", "BCG Growth-Share Matrix", "Porter's Five Forces", "PESTLE Analysis"],
+            correct: 1,
+            expl: "The Boston Consulting Group (BCG) Matrix evaluates a business portfolio by mapping relative market share against market growth rate into the four named quadrants."
+          },
+          'Information Security Essentials': {
+            q: "Which of the following is the most effective defense against social engineering attacks such as spear-phishing emails?",
+            options: ["Installing high-gain Wi-Fi antennas", "Regular security awareness training for personnel", "Defragmenting the hard drive weekly", "Overclocking the primary gateway router"],
+            correct: 1,
+            expl: "Social engineering targets human psychology rather than software bugs; therefore, continuous employee education and verification training is the primary safeguard."
+          },
+          'Basic Network & Hardware': {
+            q: "What is the primary function of the DHCP (Dynamic Host Configuration Protocol) service in a corporate local area network (LAN)?",
+            options: ["Translating domain names into IP addresses", "Automatically assigning IP addresses and gateway configs to client devices", "Filtering malware packets", "Encrypting database transactions"],
+            correct: 1,
+            expl: "DHCP dynamically allocates IP addresses, subnet masks, default gateways, and DNS server addresses to client devices upon connection."
+          }
+        }
+      },
+
+      // 9. ITEE FE (Fundamental Engineer Exam)
+      {
+        id: 'itee-fe',
+        category: 'itee',
+        tagClass: 'cat-it',
+        tagText: 'ITPEC Certification',
+        title: 'ITEE FE (Fundamental Engineer)',
+        desc: 'Level 2 rigorous examination recognized across Japan, Bangladesh, and Asia testing data structures, algorithms, system architecture, and C/Java.',
+        sections: ['Algorithms & Data Structures', 'Computer Architecture', 'Network Protocols', 'Relational Databases', 'Information Security'],
+        duration: '150 MIN AM + 150 MIN PM',
+        scoreRange: '0 to 100 (Pass Mark: 60%)',
+        defaultScore: '72',
+        subjects: {
+          'Algorithms & Data Structures': {
+            q: "When evaluating the worst-case time complexity of inserting an item into a balanced Binary Search Tree (AVL Tree) containing n nodes, what is the upper bound?",
+            options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+            correct: 1,
+            expl: "AVL trees guarantee that the height difference between subtrees is at most 1, maintaining height h = O(log n). Insertion involves lookup plus at most two tree rotations, bound to O(log n)."
+          },
+          'Relational Databases': {
+            q: "Which normal form strictly eliminates transitive functional dependencies between non-prime attributes?",
+            options: ["First Normal Form (1NF)", "Second Normal Form (2NF)", "Third Normal Form (3NF)", "Boyce-Codd Normal Form (BCNF)"],
+            correct: 2,
+            expl: "3NF requires a relation to be in 2NF and have no non-prime attribute transitively dependent on the candidate key (if X -> Y and Y -> Z, then Z cannot be transitively dependent on X)."
+          },
+          'Information Security': {
+            q: "In public-key cryptography (e.g. RSA), which key does the sender use to generate a digital signature to prove authenticity and non-repudiation?",
+            options: ["Sender's Public Key", "Sender's Private Key", "Receiver's Public Key", "Receiver's Private Key"],
+            correct: 1,
+            expl: "A digital signature is created by encrypting the message hash using the sender's private key. Anyone can verify it using the sender's public key."
+          }
+        }
+      },
+
+      // 10. IELTS Academic
+      {
+        id: 'ielts-acad',
+        category: 'intl-lang',
+        tagClass: 'cat-lang',
+        tagText: 'Language Proficiency',
+        title: 'IELTS Academic',
+        desc: 'Global benchmark for higher education and professional registration with full-length Band 9-calibrated practice for all four skills.',
+        sections: ['Listening Section', 'Academic Reading', 'Writing Task 1 & 2', 'Speaking Interview'],
+        duration: '165 MIN',
+        scoreRange: 'Band 0.0 to 9.0 (Step: 0.5)',
+        defaultScore: '8.0',
+        subjects: {
+          'Academic Reading': {
+            q: "Read the premise: 'Although early trials suggested coral transplantation was universally cost-prohibitive, micro-fragmentation methodologies have scaled reef restoration by 40-fold with negligible mortality.' Which statement aligns with the text?",
+            options: [
+              "Coral restoration has been deemed completely futile.",
+              "Micro-fragmentation drastically lowers costs and accelerates growth efficiency.",
+              "Early trials accurately proved coral can never be transplanted.",
+              "Mortality rates have reached 40 percent in newer experiments."
+            ],
+            correct: 1,
+            expl: "The excerpt states micro-fragmentation scaled restoration by 40-fold with negligible mortality, overcoming the earlier cost-prohibitive nature."
+          },
+          'Writing Task 2': {
+            q: "In an academic opinion essay, where is the most appropriate placement for your clear thesis statement reflecting your stance?",
+            options: [
+              "Only in the last sentence of the conclusion paragraph",
+              "At the end of the introductory paragraph and reiterated in the conclusion",
+              "In the body paragraph topic sentences only",
+              "Thesis statements are not recommended in Band 8+ writing"
+            ],
+            correct: 1,
+            expl: "Band descriptors for Task Achievement require a clear position throughout the response, best initiated in the introduction and affirmed in the final synthesis."
+          }
+        }
+      },
+
+      // 11. IELTS General Training
+      {
+        id: 'ielts-gen',
+        category: 'intl-lang',
+        tagClass: 'cat-lang',
+        tagText: 'Language Proficiency',
+        title: 'IELTS General Training',
+        desc: 'Migration and work visa assessment emphasizing workplace memos, informal/formal letter writing, and daily life English.',
+        sections: ['Listening', 'General Reading', 'Task 1 Letter', 'Task 2 Essay', 'Speaking'],
+        duration: '170 MIN',
+        scoreRange: 'Band 0.0 to 9.0 (Step: 0.5)',
+        defaultScore: '7.5',
+        subjects: {
+          'Task 1 Letter': {
+            q: "When drafting a semi-formal letter to a colleague who is also your project teammate, which opening is considered best suited?",
+            options: [
+              "Dear Sir/Madam,",
+              "Dear John,",
+              "Hey dude,",
+              "To whom it may concern,"
+            ],
+            correct: 1,
+            expl: "Semi-formal letters addressed to named colleagues require a respectful personal salutation: 'Dear [First Name]'."
+          }
+        }
+      },
+
+      // 12. Digital SAT (College Board)
+      {
+        id: 'sat-cb',
+        category: 'intl-grad',
+        tagClass: 'cat-intl',
+        tagText: 'US College Entrance',
+        title: 'Digital SAT (College Board)',
+        desc: 'Adaptive multi-stage format covering Information and Ideas, Craft and Structure, Advanced Math, and Problem Solving with Desmos integration.',
+        sections: ['Reading and Writing Module 1 & 2', 'Math Module 1 & 2'],
+        duration: '134 MIN',
+        scoreRange: '400 to 1600 (Step: 10)',
+        defaultScore: '1480',
+        subjects: {
+          'Math': {
+            q: "If 2x + 5y = 19 and x - 2y = -4, what is the value of 3x + 3y?",
+            options: ["12", "15", "18", "21"],
+            correct: 1,
+            expl: "From second equation: x = 2y - 4. Substitute into first: 2(2y - 4) + 5y = 19 => 4y - 8 + 5y = 19 => 9y = 27 => y = 3. Thus x = 2(3) - 4 = 2. Therefore: 3x + 3y = 3(2) + 3(3) = 6 + 9 = 15."
+          },
+          'Reading and Writing': {
+            q: "The researcher noted that the migratory pattern was not uniform; rather, it was __________, fluctuating wildly depending on unseasonable shifts in sea surface temperature.",
+            options: ["immutable", "capricious", "perfunctory", "dogmatic"],
+            correct: 1,
+            expl: "'Capricious' means given to sudden and unaccountable changes of mood or behavior, directly matching 'fluctuating wildly'."
+          }
+        }
+      },
+
+      // 13. TOEFL iBT
+      {
+        id: 'toefl-ibt',
+        category: 'intl-lang',
+        tagClass: 'cat-lang',
+        tagText: 'Language Proficiency',
+        title: 'TOEFL iBT',
+        desc: 'ETS premier internet-based English test simulating university campus conversations, academic lectures, and integrated writing synthesis.',
+        sections: ['Reading', 'Listening', 'Speaking', 'Writing for Academic Discussion'],
+        duration: '120 MIN',
+        scoreRange: '0 to 120 (Step: 1)',
+        defaultScore: '106',
+        subjects: {
+          'Reading': {
+            q: "In an astronomy passage: 'The accretion disk around a protostar emits infrared radiation, obscuring the optical wavelength.' What can be inferred about optical telescopes?",
+            options: [
+              "They easily penetrate dense stellar clouds.",
+              "They struggle to directly observe protostars through dust disks.",
+              "They are exclusively used to track infrared wavelengths.",
+              "They have replaced space-based observatories."
+            ],
+            correct: 1,
+            expl: "Because the emitted radiation and surrounding dust obscure optical wavelengths, conventional optical telescopes struggle to directly view the protostar."
+          }
+        }
+      },
+
+      // 14. GRE General Test (ETS)
+      {
+        id: 'gre-ets',
+        category: 'intl-grad',
+        tagClass: 'cat-intl',
+        tagText: 'Graduate School',
+        title: 'GRE General Test',
+        desc: 'Graduate admissions exam measuring Verbal Reasoning, Quantitative Reasoning (Arithmetic, Algebra, Geometry), and Analytical Writing.',
+        sections: ['Verbal Reasoning', 'Quantitative Reasoning', 'Analytical Writing'],
+        duration: '118 MIN (Shorter GRE format)',
+        scoreRange: '260 to 340 (Quant & Verbal)',
+        defaultScore: '324',
+        subjects: {
+          'Quantitative Reasoning': {
+            q: "Column A: The standard deviation of {10, 20, 30, 40, 50}. Column B: The standard deviation of {110, 120, 130, 140, 150}. Which is greater?",
+            options: [
+              "Quantity A is greater.",
+              "Quantity B is greater.",
+              "The two quantities are equal.",
+              "The relationship cannot be determined."
+            ],
+            correct: 2,
+            expl: "Adding a constant (100) to every value in a set shifts the mean but does not alter the dispersion or spread from the mean. Standard deviation remains identical."
+          },
+          'Verbal Reasoning': {
+            q: "Select the word that best fits: 'Although the critic's review was ostensibly praise, subtle undercurrents of irony rendered it decidedly ________.'",
+            options: ["laudatory", "sycophantic", "pejorative", "euphoric"],
+            correct: 2,
+            expl: "'Pejorative' means expressing contempt or disapproval, fitting the contrast introduced by 'Although' and 'subtle undercurrents of irony'."
+          }
+        }
+      },
+
+      // 15. GMAT Focus Edition
+      {
+        id: 'gmat-focus',
+        category: 'intl-grad',
+        tagClass: 'cat-intl',
+        tagText: 'Business School',
+        title: 'GMAT Focus Edition',
+        desc: 'Premier business school entrance exam featuring Quantitative Reasoning, Verbal Reasoning, and dedicated Data Insights sections.',
+        sections: ['Quantitative Reasoning', 'Verbal Reasoning', 'Data Insights (Multi-Source)'],
+        duration: '135 MIN',
+        scoreRange: '205 to 805 (Step: 10)',
+        defaultScore: '685',
+        subjects: {
+          'Data Insights': {
+            q: "A company's ROI increased by 15% in Q2 while its operating expenses dropped by 10%. If revenue was unchanged, what is the primary conclusion regarding net profit margin?",
+            options: [
+              "Net profit margin contracted.",
+              "Net profit margin expanded due to reduced operational costs.",
+              "Return on equity is negative.",
+              "Operating leverage is undefined."
+            ],
+            correct: 1,
+            expl: "Reduced operating expenses with flat revenue directly expands operating income and net profit margin, driving the recorded higher ROI."
+          }
+        }
+      },
+
+      // 16. JLPT (Japanese-Language Proficiency Test)
+      {
+        id: 'jlpt-japan',
+        category: 'intl-other',
+        tagClass: 'cat-lang',
+        tagText: 'Japanese Language',
+        title: 'JLPT (N5 - N2 Mastery)',
+        desc: 'Standardized evaluation of Japanese reading, kanji characters, listening comprehension, and grammar from basic N5 to business-ready N2.',
+        sections: ['Language Knowledge (Vocabulary/Kanji)', 'Grammar & Reading', 'Listening'],
+        duration: '105 to 140 MIN',
+        scoreRange: '0 to 180 Points (Pass ~90+)',
+        defaultScore: '130',
+        subjects: {
+          'Language Knowledge (Vocabulary/Kanji)': {
+            q: "漢字の読み方を選んでください：「毎日、学校で日本語を勉強します。」の「勉強」の読みは？",
+            options: ["べんきょう (Benkyou)", "けんきゅう (Kenkyuu)", "かんきょう (Kankyou)", "めいしょう (Meishou)"],
+            correct: 0,
+            expl: "「勉強」は音読みで「べんきょう」(benkyou) と読みます。意味は 'study/learning' です。"
+          },
+          'Grammar & Reading': {
+            q: "空欄に入る最も適切な助詞を選んでください：「明日、友達 ____ 一緒に映画を見に行きます。」",
+            options: ["に", "で", "と", "を"],
+            correct: 2,
+            expl: "人と行動を共にすることを表す文型は「〜と一緒に」(together with)。したがって「友達と一緒に」となります。"
+          }
+        }
+      }
+    ];
+
+    // ════════════════════════════════════════════════════════════
+    // STATE MANAGEMENT
+    // ════════════════════════════════════════════════════════════
+    let currentFilter = 'all';
+    let activeExamObj = null;
+    let activeSubjectKey = null;
+    let selectedOptionIdx = null;
+
+    // Render Cards in Grid
+    function renderExams() {
+      const container = document.getElementById('examsContainer');
+      const search = document.getElementById('examSearchField').value.trim().toLowerCase();
+
+      const filtered = allExamsData.filter(exam => {
+        const matchesCat = currentFilter === 'all' || exam.category === currentFilter;
+        const matchesQuery = exam.title.toLowerCase().includes(search) ||
+                             exam.desc.toLowerCase().includes(search) ||
+                             exam.sections.some(s => s.toLowerCase().includes(search));
+        return matchesCat && matchesQuery;
+      });
+
+      document.getElementById('activeExamsCount').innerText = filtered.length;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 70px 20px; color: var(--text-dim);">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 14px; opacity: 0.6;">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <h3 style="color: #fff; margin-bottom: 6px; font-size: 17px;">No matching exams found</h3>
+            <p style="font-size: 13px;">Try typing a different subject keyword or choose a broader category filter.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(exam => `
+        <div class="exam-card">
+          <div class="card-head">
+            <span class="badge-category ${exam.tagClass}">${exam.tagText}</span>
+            <div class="status-indicator">
+              <span class="status-pulse"></span>
+              Question bank ready
+            </div>
+          </div>
+
+          <h3 class="exam-card-title">${exam.title}</h3>
+          <p class="exam-card-desc">${exam.desc}</p>
+
+          <div class="sec-label">SECTIONS & SYLLABUS</div>
+          <div class="sec-pill-group">
+            ${exam.sections.map(sec => `<span class="section-pill">${sec}</span>`).join('')}
+          </div>
+
+          <div class="card-foot">
+            <div class="foot-meta">
+              DURATION: <strong>${exam.duration}</strong>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-secondary" onclick="openDemoQuiz('${exam.id}')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Demo Questions
+              </button>
+              <button class="btn btn-primary" onclick="openEnrollmentModal('${exam.id}')">
+                Enroll
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Filter Chips Handler
+    function setExamFilter(cat) {
+      currentFilter = cat;
+      document.querySelectorAll('#filterChipsRow .filter-chip').forEach(chip => {
+        chip.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+      renderExams();
+    }
+
+    // Search bar event
+    document.getElementById('examSearchField').addEventListener('input', renderExams);
+
+    // View tab toggle
+    function toggleMainView(view) {
+      document.querySelectorAll('.tab-buttons .tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      if (view === 'myprep') {
+        currentFilter = 'bd-board';
+        document.getElementById('filterChipsRow').style.display = 'none';
+      } else {
+        currentFilter = 'all';
+        document.getElementById('filterChipsRow').style.display = 'flex';
+      }
+      renderExams();
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // DEMO QUIZ MODAL LOGIC
+    // ════════════════════════════════════════════════════════════
+    function openDemoQuiz(examId) {
+      activeExamObj = allExamsData.find(e => e.id === examId);
+      if (!activeExamObj) return;
+
+      document.getElementById('modalExamTitle').innerText = `${activeExamObj.title} — Practice Drill`;
+      document.getElementById('modalExamSubtitle').innerText = `Authentic question items covering ${activeExamObj.sections.join(', ')}`;
+
+      const subjects = Object.keys(activeExamObj.subjects);
+      const subBar = document.getElementById('modalSubjectBar');
+
+      if (subjects.length > 1) {
+        subBar.style.display = 'flex';
+        subBar.innerHTML = subjects.map((sub, i) => `
+          <button class="sub-chip ${i === 0 ? 'active' : ''}" onclick="pickModalSubject('${sub}')">${sub}</button>
+        `).join('');
+        activeSubjectKey = subjects[0];
+      } else {
+        subBar.style.display = 'none';
+        activeSubjectKey = subjects[0];
+      }
+
+      displayQuestionForSubject(activeSubjectKey);
+      document.getElementById('demoPracticeModal').classList.add('open');
+    }
+
+    function pickModalSubject(subjectName) {
+      activeSubjectKey = subjectName;
+      document.querySelectorAll('.sub-chip').forEach(c => {
+        c.classList.toggle('active', c.innerText === subjectName);
+      });
+      displayQuestionForSubject(subjectName);
+    }
+
+    function displayQuestionForSubject(subjectKey) {
+      selectedOptionIdx = null;
+      const data = activeExamObj.subjects[subjectKey];
+
+      document.getElementById('quizSubjectTag').innerText = `${activeExamObj.title} › ${subjectKey}`;
+      document.getElementById('quizQuestionText').innerText = data.q;
+      
+      const solBox = document.getElementById('quizSolutionBox');
+      solBox.style.display = 'none';
+      solBox.innerHTML = '';
+
+      const submitBtn = document.getElementById('submitAnswerBtn');
+      submitBtn.innerText = "Check Solution";
+      submitBtn.disabled = false;
+
+      const optsContainer = document.getElementById('quizOptionsList');
+      const letters = ['A', 'B', 'C', 'D'];
+      optsContainer.innerHTML = data.options.map((optionText, idx) => `
+        <div class="quiz-opt" onclick="pickOption(${idx})">
+          <div class="quiz-opt-letter">${letters[idx]}</div>
+          <div class="quiz-opt-text">${optionText}</div>
+        </div>
+      `).join('');
+    }
+
+    function pickOption(idx) {
+      selectedOptionIdx = idx;
+      document.querySelectorAll('.quiz-opt').forEach((optEl, i) => {
+        optEl.classList.toggle('selected', i === idx);
+      });
+    }
+
+    function evaluateQuizAnswer() {
+      if (selectedOptionIdx === null) {
+        alert("Please select one of the answer choices first.");
+        return;
+      }
+
+      const qData = activeExamObj.subjects[activeSubjectKey];
+      const optElements = document.querySelectorAll('.quiz-opt');
+
+      optElements.forEach((el, i) => {
+        el.classList.remove('selected');
+        if (i === qData.correct) {
+          el.classList.add('correct');
+        } else if (i === selectedOptionIdx) {
+          el.classList.add('wrong');
+        }
+      });
+
+      const solBox = document.getElementById('quizSolutionBox');
+      const isCorrect = selectedOptionIdx === qData.correct;
+
+      solBox.style.display = 'block';
+      solBox.style.background = isCorrect ? 'rgba(16, 185, 129, 0.12)' : 'rgba(244, 63, 94, 0.12)';
+      solBox.style.border = isCorrect ? '1px solid rgba(16, 185, 129, 0.35)' : '1px solid rgba(244, 63, 94, 0.35)';
+      solBox.style.color = isCorrect ? '#6ee7b7' : '#fda4af';
+
+      solBox.innerHTML = `
+        <strong style="color: #fff; display: block; margin-bottom: 4px;">
+          ${isCorrect ? '✅ Well done! That is correct.' : '❌ Incorrect choice.'}
+        </strong>
+        ${qData.expl}
+      `;
+
+      document.getElementById('submitAnswerBtn').disabled = true;
+    }
+
+    function closeDemoPracticeModal() {
+      document.getElementById('demoPracticeModal').classList.remove('open');
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // ENROLLMENT MODAL LOGIC
+    // ════════════════════════════════════════════════════════════
+    function openEnrollmentModal(examId) {
+      const exam = allExamsData.find(e => e.id === examId);
+      if (!exam) return;
+
+      document.getElementById('enrollHeaderTitle').innerText = `Enroll in ${exam.title}`;
+      document.getElementById('targetScoreHint').innerText = `Allowed target range: ${exam.scoreRange}`;
+      document.getElementById('targetScoreInput').value = exam.defaultScore;
+
+      // Default date to 90 days ahead
+      const nextDate = new Date();
+      nextDate.setDate(nextDate.getDate() + 90);
+      document.getElementById('targetExamDate').value = nextDate.toISOString().split('T')[0];
+
+      document.getElementById('enrollmentModal').classList.add('open');
+    }
+
+    function closeEnrollmentModal() {
+      document.getElementById('enrollmentModal').classList.remove('open');
+    }
+
+    function submitEnrollment() {
+      const dateVal = document.getElementById('targetExamDate').value;
+      const scoreVal = document.getElementById('targetScoreInput').value;
+      alert(`🎉 Enrolled successfully!\nTarget: ${scoreVal}\nTarget Exam Date: ${dateVal}\nYour customized daily drills and weekly predicted mocks are now unlocked.`);
+      closeEnrollmentModal();
+    }
+
+    // Close modals upon clicking the dark backdrop
+    window.addEventListener('click', (e) => {
+      const demoModal = document.getElementById('demoPracticeModal');
+      const enrollModal = document.getElementById('enrollmentModal');
+      if (e.target === demoModal) closeDemoPracticeModal();
+      if (e.target === enrollModal) closeEnrollmentModal();
+    });
+
+    // Initial population
+    renderExams();
+  </script>
+</body>
+</html>
